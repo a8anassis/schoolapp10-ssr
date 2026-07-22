@@ -51,3 +51,5 @@ public class Teacher extends AbstractEntity {
         return Objects.hashCode(getVat());
     }
 }
+
+
