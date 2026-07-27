@@ -56,8 +56,8 @@
                 </div>
 
                 <div class="col-lg-6 min-height-100">
-                    <label for="region">Region:</label><br>
-                    <select name="" id="region" th:field="*{regionId}">
+                    <label th:for="regionId">Region:</label><br>
+                    <select name="" th:field="*{regionId}">
                         <option value="" selected>Select Region</option>
                         <option th:each="region : ${regionsReadOnlyDTO}" th:value="${region.id}" th:text="${region.name}"></option>
                     </select>
