@@ -64,7 +64,7 @@ public class TeacherController {
             // επιστρέψει ένα success page
 
             // PRG -- Post-Redirect-Get
-            redirectAttributes.addAttribute("teacherReadonlyDTO", teacherReadOnlyDTO);
+            redirectAttributes.addAttribute("teacherReadOnlyDTO", teacherReadOnlyDTO);
             return "redirect:/teachers/success";        // controller
         } catch (EntityAlreadyExistsException | EntityInvalidArgumentException e) {
             model.addAttribute("errorMessage", e.getMessage());
@@ -74,7 +74,7 @@ public class TeacherController {
 
     @GetMapping("/success")
     public String teacherInsertSuccess(Model model) {
-        if (!model.containsAttribute("teacherInsertDTO")) {     // ελέγχει το F5 - refresh
+        if (!model.containsAttribute("teacherReadOnlyDTO")) {     // ελέγχει το F5 - refresh
             return "redirect:/teachers";
         }
         return "teacher-success";
