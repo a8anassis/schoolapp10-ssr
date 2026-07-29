@@ -28,4 +28,15 @@ public abstract class AbstractEntity {
     @LastModifiedDate
     @Column(name = "updated_at", nullable = false, columnDefinition = "DATETIME")
     private Instant updatedAt;
-}
+
+    @Column(nullable = false)
+    private boolean deleted;
+
+    @Column(name = "deleted_at", columnDefinition = "DATETIME")
+    private Instant deletedAt;          // UTC
+
+    public void softDelete() {
+        this.deleted = true;
+        this.deletedAt = Instant.now();
+    }
+ }
