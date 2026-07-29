@@ -64,7 +64,7 @@ public class TeacherController {
             // επιστρέψει ένα success page
 
             // PRG -- Post-Redirect-Get
-            redirectAttributes.addAttribute("teacherReadOnlyDTO", teacherReadOnlyDTO);
+            redirectAttributes.addFlashAttribute("teacherReadOnlyDTO", teacherReadOnlyDTO);
             return "redirect:/teachers/success";        // controller
         } catch (EntityAlreadyExistsException | EntityInvalidArgumentException e) {
             model.addAttribute("errorMessage", e.getMessage());
@@ -83,13 +83,13 @@ public class TeacherController {
 
     @ModelAttribute("regionsReadOnlyDTO")       // εκτελείται πριν από κάθε request handler
     public List<RegionReadOnlyDTO> regions() {
-//        return regionService.findAllRegionsSortedByName();
+        return regionService.findAllRegionsSortedByName();
 
-        return List.of(
-                new RegionReadOnlyDTO(1L, "Αθήνα"),
-                new RegionReadOnlyDTO(2L, "Βόλος"),
-                new RegionReadOnlyDTO(3L, "Θεσσαλονίκη")
-        );
+//        return List.of(
+//                new RegionReadOnlyDTO(1L, "Αθήνα"),
+//                new RegionReadOnlyDTO(2L, "Βόλος"),
+//                new RegionReadOnlyDTO(3L, "Θεσσαλονίκη")
+//        );
     }
 
 
