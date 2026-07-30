@@ -7,6 +7,7 @@ import gr.aueb.cf.schoolapp.dto.*;
 import gr.aueb.cf.schoolapp.model.Teacher;
 import gr.aueb.cf.schoolapp.service.IRegionService;
 import gr.aueb.cf.schoolapp.service.ITeacherService;
+import gr.aueb.cf.schoolapp.validator.TeacherEditValidator;
 import gr.aueb.cf.schoolapp.validator.TeacherInsertValidator;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,7 @@ public class TeacherController {
     private final ITeacherService teacherService;
     private final IRegionService regionService;
     private final TeacherInsertValidator teacherInsertValidator;
+    private final TeacherEditValidator teacherEditValidator;
 
 //    @Autowired
 //    public TeacherController(ITeacherService teacherService, IRegionService regionService) {
@@ -104,6 +106,28 @@ public class TeacherController {
                                 BindingResult bindingResult, RedirectAttributes redirectAttributes,
                                 Model model) {
 
+        teacherEditValidator.validate(teacherEditDTO, bindingResult);
+        if (bindingResult.hasErrors()) {
+            return "teacher-edit";
+        }
+
+        try {
+            TeacherReadOnlyDTO readOnlyDTO = teacherService.updateTeacher(teacherEditDTO);
+            redirectAttributes.addFlashAttribute("teacherReadOnlyDTO", readOnlyDTO);
+            return "redirect:/teachers/update-success";
+        } catch (EntityNotFoundException | EntityAlreadyExistsException | EntityInvalidArgumentException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "teacher-edit";
+        }
+    }
+
+    @GetMapping("/update-success")
+    public String teacherUpdateSuccess(Model model) {
+        if (!model.containsAttribute("teacherReadOnlyDTO")) {
+            return "redirect:/teachers";
+        }
+
+        return "update-teacher-success";
     }
 
 
