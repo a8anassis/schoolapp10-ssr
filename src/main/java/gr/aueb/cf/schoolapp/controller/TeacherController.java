@@ -3,9 +3,7 @@ package gr.aueb.cf.schoolapp.controller;
 import gr.aueb.cf.schoolapp.core.exceptions.EntityAlreadyExistsException;
 import gr.aueb.cf.schoolapp.core.exceptions.EntityInvalidArgumentException;
 import gr.aueb.cf.schoolapp.core.exceptions.EntityNotFoundException;
-import gr.aueb.cf.schoolapp.dto.RegionReadOnlyDTO;
-import gr.aueb.cf.schoolapp.dto.TeacherInsertDTO;
-import gr.aueb.cf.schoolapp.dto.TeacherReadOnlyDTO;
+import gr.aueb.cf.schoolapp.dto.*;
 import gr.aueb.cf.schoolapp.model.Teacher;
 import gr.aueb.cf.schoolapp.service.IRegionService;
 import gr.aueb.cf.schoolapp.service.ITeacherService;
@@ -19,13 +17,11 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/teachers")
@@ -90,6 +86,24 @@ public class TeacherController {
         model.addAttribute("teachers", teachersPage.getContent());
         model.addAttribute("page", teachersPage);
         return "teachers";
+    }
+
+    @GetMapping("/edit/{uuid}")
+    public String getTeacherEdit(@PathVariable UUID uuid, Model model) throws EntityNotFoundException {
+        try {
+            TeacherEditDTO teacherEditDTO = teacherService.getTeacherByUUIDDeletedFalse(uuid);
+            model.addAttribute("teacherEditDTO", teacherEditDTO);
+        } catch (EntityNotFoundException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+        }
+        return "teacher-edit";
+    }
+
+    @PostMapping("/edit")
+    public String updateTeacher(@Valid @ModelAttribute TeacherEditDTO teacherEditDTO,
+                                BindingResult bindingResult, RedirectAttributes redirectAttributes,
+                                Model model) {
+
     }
 
 
