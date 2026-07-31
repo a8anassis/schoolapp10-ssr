@@ -14,8 +14,7 @@
 <div class="main-content">
     <h1 class="page-title">Teachers Management</h1>
 
-<!--    <div sec:authorize="hasAuthority('INSERT_TEACHER')" class="action-buttons">-->
-    <div class="action-buttons">
+    <div sec:authorize="hasAuthority('INSERT_TEACHER')" class="action-buttons">
         <a th:href="@{/teachers/insert}" class="btn btn-primary">
             <i class="bi bi-plus-circle"></i> Insert Teacher
         </a>
@@ -25,8 +24,8 @@
         <p th:text="${errorMessage}"></p>
     </div>
 
-<!--    <table sec:authorize="hasAuthority('VIEW_TEACHERS')">-->
-    <table>
+    <table sec:authorize="hasAuthority('VIEW_TEACHERS')">
+<!--    <table>-->
         <thead>
         <tr>
 <!--                <th>ID</th>-->
@@ -35,8 +34,7 @@
             <th>Lastname</th>
             <th>VAT</th>
             <th>Region</th>
-<!--            <th sec:authorize="hasAnyAuthority('EDIT_TEACHER', 'DELETE_TEACHER')">Actions</th>-->
-            <th>Actions</th>
+            <th sec:authorize="hasAnyAuthority('EDIT_TEACHER', 'DELETE_TEACHER')">Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -49,17 +47,13 @@
             <td th:text="${teacher.lastname}"></td>
             <td th:text="${teacher.vat}"></td>
             <td th:text="${teacher.region}"></td>
-<!--            <td sec:authorize="hasAnyAuthority('EDIT_TEACHER', 'DELETE_TEACHER')">-->
             <td>
-<!--            <td>-->
-<!--                <a sec:authorize="hasAuthority('EDIT_TEACHER')"-->
-                <a
+                <a sec:authorize="hasAuthority('EDIT_TEACHER')"
                    th:href="@{/teachers/edit/{uuid}(uuid=${teacher.uuid})}"
                    class="btn btn-sm btn-outline-primary"
                 >Edit
                 </a>
-<!--                <form sec:authorize="hasAuthority('DELETE_TEACHER')"-->
-                <form
+                <form sec:authorize="hasAuthority('DELETE_TEACHER')"
                       th:action="@{/teachers/delete/{uuid}(uuid=${teacher.uuid})}"
                       method="post"
                       class="d-inline"

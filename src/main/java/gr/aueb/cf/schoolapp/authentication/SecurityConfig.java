@@ -7,9 +7,11 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
 @EnableWebSecurity          // Filter Security
@@ -17,12 +19,13 @@ import org.springframework.security.web.SecurityFilterChain;
 @RequiredArgsConstructor    // DI
 public class SecurityConfig {
 
-    // auth success handler
-    // auth failure handler
+    private final AuthenticationSuccessHandler authSuccessHandler;
+    private final CustomAuthenticationFailureHandler authFailureHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+//                .csrf(AbstractHttpConfigurer::disable)  // Cross-Site Request Forgery
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/", "/index.html").permitAll()
                         .requestMatchers("/login").permitAll()
@@ -44,8 +47,8 @@ public class SecurityConfig {
                 )
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login")    // GET /login
-//                        .successHandler(auth success handler))
-//                                .failureHandler(failure handler)
+                        .successHandler(authSuccessHandler)         // inject
+                        .failureHandler(authFailureHandler)         // inject
 
                 )
                 .logout(logout -> logout
